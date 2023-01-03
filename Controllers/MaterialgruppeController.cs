@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Materialverwaltung.Data;
 using Materialverwaltung.Models;
 
-namespace Materialverwaltung
+namespace Materialverwaltung.Controllers
 {
     public class MaterialgruppeController : Controller
     {
