@@ -145,12 +145,21 @@ namespace Materialverwaltung.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Materialgruppe'  is null.");
             }
+            // Materialgruppe löschen
             var materialgruppe = await _context.Materialgruppe.FindAsync(id);
             if (materialgruppe != null)
             {
                 _context.Materialgruppe.Remove(materialgruppe);
             }
-            
+            // Löschen der Materialien, welche die Materialgruppe zugewiesen wurden
+            var materialien = from material in _context.Materials
+                           where material.MaterialgruppeId == id
+                           select material;
+
+            foreach(var material in materialien ) {
+                _context.Materials.Remove(material);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
