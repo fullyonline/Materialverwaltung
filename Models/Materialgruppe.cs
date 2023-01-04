@@ -7,7 +7,5 @@ namespace Materialverwaltung.Models
         public int Id { get; set; }
         [StringLength(255, ErrorMessage = "Max. ist 255 Zeichen.")]
         public string Name { get; set; }
-
-        public virtual ICollection<Material> Materials { get; set; }
     }
 }
