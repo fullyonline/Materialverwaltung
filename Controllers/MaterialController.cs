@@ -61,8 +61,16 @@ namespace Materialverwaltung.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Stock,BuyPrice,SellPrice")] Material material)
+        public async Task<IActionResult> Create(Material material)
         {
+            material.Materialgruppe = _context.Materialgruppe.FirstOrDefault(x => x.Id == material.Materialgruppe.Id);
+            if (material.Materialgruppe != null)
+            {
+                material.MaterialgruppeId = material.Materialgruppe.Id;
+            }
+            // after we added the Materialgruppe it has to be revalidated
+            ModelState.Clear();
+            TryValidateModel(material);
             if (ModelState.IsValid)
             {
                 _context.Add(material);
@@ -86,11 +94,14 @@ namespace Materialverwaltung.Controllers
                 return NotFound();
             }
 
+            ViewBag.MaterialgruppeNameList = new SelectList(_context.Materialgruppe, "Id", "Name", _context.Materialgruppe.FirstOrDefault().Name);
+
             var material = await _context.Materials.FindAsync(id);
             if (material == null)
             {
                 return NotFound();
             }
+            material.Materialgruppe = _context.Materialgruppe.Where(x => x.Id == material.MaterialgruppeId).FirstOrDefault();
             return View(material);
         }
 
@@ -99,12 +110,21 @@ namespace Materialverwaltung.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Stock,BuyPrice,SellPrice")] Material material)
+        public async Task<IActionResult> Edit(int id, Material material)
         {
             if (id != material.Id)
             {
                 return NotFound();
             }
+
+            material.Materialgruppe = _context.Materialgruppe.FirstOrDefault(x => x.Id == material.Materialgruppe.Id);
+            if (material.Materialgruppe != null)
+            {
+                material.MaterialgruppeId = material.Materialgruppe.Id;
+            }
+            // after we added the Materialgruppe it has to be revalidated
+            ModelState.Clear();
+            TryValidateModel(material);
 
             if (ModelState.IsValid)
             {
