@@ -22,7 +22,7 @@ namespace Materialverwaltung.Controllers
         // GET: Material
         public async Task<IActionResult> Index()
         {
-              return _context.Materials != null ? 
+            return _context.Materials != null ? 
                           View(await _context.Materials.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Materials'  is null.");
         }
@@ -48,6 +48,11 @@ namespace Materialverwaltung.Controllers
         // GET: Material/Create
         public IActionResult Create()
         {
+            if (_context == null || !_context.Materialgruppe.Any())
+            {
+                return CustomerWarning();
+            }
+            ViewBag.MaterialgruppeNameList = new SelectList(_context.Materialgruppe, "Id", "Name", _context.Materialgruppe.FirstOrDefault().Name);
             return View();
         }
 
@@ -65,6 +70,12 @@ namespace Materialverwaltung.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(material);
+        }
+
+        public IActionResult CustomerWarning()
+        {
+            ViewData["Warning"] = "Es muss mindestens eine Materialgruppe angelegt werden.";
+            return View("_CustomerWarning");
         }
 
         // GET: Material/Edit/5
