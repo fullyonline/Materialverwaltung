@@ -12,7 +12,7 @@ namespace Materialverwaltung.Models
         public string Name { get; set; }
         [DisplayName("Lagerbestand")]
         public int Stock { get; set; }
-        [Range(0, 999999.99), DisplayName("Kaufspreis")]
+        [Range(0, 999999.99), DisplayName("Kaufpreis")]
         public decimal BuyPrice { get; set; }
         [Range(0, 999999.99), DisplayName("Verkaufspreis")]
         public decimal SellPrice { get; set; }
