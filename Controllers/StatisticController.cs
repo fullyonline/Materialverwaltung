@@ -38,7 +38,7 @@ namespace Materialverwaltung.Controllers
 
         public IActionResult CustomerWarning()
         {
-            ViewData["Warning"] = "Es muss mindestens eine Materialerfasst sein um eine Statistik darzustellen.";
+            ViewData["Warning"] = "Es muss mindestens eine Material erfasst sein um eine Statistik darzustellen.";
             return View("_CustomerWarning");
         }
     }
